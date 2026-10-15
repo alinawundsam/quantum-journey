@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quantum Journey</title>
+<meta name="description" content="Explore Quantum Innovation and Quantum Safe with IBM Innovation Studio Amsterdam — resources, learning paths and next steps for your organisation.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Quantum Journey · IBM Innovation Studio">
+<meta property="og:description" content="Explore Quantum Innovation and Quantum Safe with IBM Innovation Studio Amsterdam.">
+<meta property="og:image" content="assets/avatar.png">
+<link rel="icon" type="image/png" href="assets/avatar.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Mono:wght@400&display=swap">
+</head>
+<style>
+/* Layout: Alina's Figma system — one centered column of square IBM tiles, grouped under "Learn more" / "Take action".
+   Two sticker pages share it: #innovation (chandelier photo) and #safe (animated encryption stream). Single dark photographic look by design. */
+:root {
+  --ink: #050505;
+  --fg: #ffffff;
+  --sub: #e8e6e3;
+  --label: #d6d3cf;
+  --tile: #ffffff;
+  --tile-hover: #f2f4f8;
+  --tile-fg: #0050e6;
+  --cta: #0050e6;
+  --cta-hover: #0043c2;
+  --sand: #bcb5ab;
+  --code: #4589ff;
+  --font: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+html, body { min-height: 100%; }
+body { background: var(--ink); color: var(--fg); font-family: var(--font); -webkit-font-smoothing: antialiased; }
+
+/* Backgrounds */
+.bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+/* Innovation: full-viewport photo anchored center-bottom, dark fade at top.
+   Drop a new assets/bg-innovation.jpg (< 300 KB, ideally also a .webp) to replace. */
+.bg-innovation {
+  background: url("assets/bg-innovation.jpg") center bottom / cover no-repeat, #0d0b09;
+}
+.bg-innovation .photo { display: none; }/* placeholder div kept in HTML, hidden */
+.bg-safe { background: #02050c; }
+.bg-safe canvas { width: 100%; height: 100%; display: block; }
+.bg .fade { position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.92) 0%, rgba(0,0,0,.55) 24%, rgba(0,0,0,.18) 50%, rgba(0,0,0,0) 72%); }
+.bg-safe .fade { background: linear-gradient(to bottom, rgba(0,0,0,.94) 0%, rgba(0,0,0,.6) 28%, rgba(0,0,0,.35) 60%, rgba(0,0,0,.55) 100%); }
+.bg .grain { position: absolute; inset: 0; background: url("assets/grain.png") repeat; background-size: 150px 150px; }
+
+main { position: relative; z-index: 1; max-width: 344px; margin: 0 auto;
+  padding-inline: 16px; padding-block: 52px 72px;
+  display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+.avatar { width: 88px; height: 88px; border-radius: 50%; display: block;
+  box-shadow: 0 0 0 1.5px rgba(0,0,0,.6), 0 12px 32px rgba(0,0,0,.45); }
+.series { margin: 18px 0 0; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--label); }
+h1 { margin: 20px 0 8px; font-size: 26px; font-weight: 600; letter-spacing: -.005em; text-wrap: balance; }
+.sub { margin: 0; color: var(--sub); font-size: 17px; font-weight: 300; line-height: 1.4; text-wrap: balance; max-width: 30ch; }
+
+.group { width: 100%; margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
+.group + .group { margin-top: 28px; }
+.group h2 { margin: 0 0 2px; text-align: left; font-size: 12px; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--fg); text-shadow: 0 1px 2px rgba(0,0,0,.7), 0 0 14px rgba(0,0,0,.65); }
+
+.tile { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  min-height: 48px; padding: 0 16px; background: var(--tile); color: var(--tile-fg);
+  font-size: 15px; letter-spacing: .01em; text-decoration: none; text-align: left;
+  transition: background-color .11s ease; }
+.tile:hover { background: var(--tile-hover); }
+.tile:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; box-shadow: inset 0 0 0 2px var(--cta); }
+.tile svg { width: 18px; height: 18px; flex: none; }
+.tile.cta { background: var(--cta); color: var(--fg); min-height: 56px; font-weight: 600; }
+.tile.cta:hover { background: var(--cta-hover); }
+.tile.cta:focus-visible { box-shadow: inset 0 0 0 2px var(--fg); outline-color: var(--cta); }
+
+.mail { margin-top: 20px; display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,0,0,.6); padding: 6px 6px 6px 12px; font-size: 13px; }
+.mail code { font-family: inherit; user-select: all; }
+.copy { font: inherit; font-size: 12px; color: var(--fg); background: transparent;
+  border: 1px solid rgba(255,255,255,.5); padding: 4px 10px; cursor: pointer; }
+.copy:hover { background: rgba(255,255,255,.12); }
+.copy:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+
+.switch { margin-top: 28px; color: var(--fg); font-size: 14px; text-decoration: underline;
+  text-underline-offset: 3px; text-shadow: 0 1px 8px rgba(0,0,0,.7); }
+.switch:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+
+
+/* Email sheet: fallback when the device has no mail app */
+dialog.sheet { border: 0; padding: 0; width: min(100% - 32px, 400px); max-height: calc(100% - 32px);
+  background: #fff; color: #161616; font-family: var(--font); }
+dialog.sheet::backdrop { background: rgba(0,0,0,.6); }
+.sheet-in { padding: 20px 16px 16px; display: flex; flex-direction: column; gap: 12px; text-align: left; }
+.sheet-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.sheet h3 { margin: 0; font-size: 18px; font-weight: 600; }
+.sheet .x { font: inherit; font-size: 22px; line-height: 1; background: none; border: 0; cursor: pointer; color: #161616; padding: 4px 8px; }
+.sheet .x:focus-visible, .sheet .btn:focus-visible { outline: 2px solid var(--cta); outline-offset: 2px; }
+.sheet .lbl { font-size: 12px; color: #525252; letter-spacing: .02em; }
+.sheet .val { font-size: 14px; word-break: break-word; }
+.sheet textarea { width: 100%; box-sizing: border-box; height: 168px; resize: none; border: 1px solid #c6c6c6;
+  background: #f4f4f4; padding: 10px; font: 13px/1.45 var(--font); color: #161616; }
+.sheet .row { display: flex; flex-direction: column; gap: 8px; }
+.sheet .btn { display: flex; align-items: center; justify-content: center; min-height: 48px; font: inherit; font-size: 15px;
+  text-decoration: none; cursor: pointer; border: 0; }
+.sheet .btn.primary { background: var(--cta); color: #fff; }
+.sheet .btn.primary:hover { background: var(--cta-hover); }
+.sheet .btn.secondary { background: #fff; color: var(--cta); border: 1px solid var(--cta); }
+.sheet .note { margin: 0; font-size: 12px; color: #525252; }
+@media (prefers-reduced-motion: reduce) { .tile { transition: none; } }
+</style>
+
+<div class="bg bg-innovation" id="bgInnovation" aria-hidden="true"><div class="photo"></div><div class="fade"></div><div class="grain"></div></div>
+<div class="bg bg-safe" id="bgSafe" aria-hidden="true" hidden><canvas id="code"></canvas><div class="fade"></div><div class="grain"></div></div>
+
+<main>
+  <img class="avatar" src="assets/avatar.png" alt="IBM logo">
+  <h1 id="title">Quantum Innovation</h1>
+  <p class="sub" id="subtitle">What could your industry solve with quantum?</p>
+
+  <section class="group" aria-labelledby="learnH">
+    <h2 id="learnH">Learn more</h2>
+    <a class="tile" id="watch" target="_blank" rel="noopener">Watch the explainer
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M7 28a1 1 0 0 1-1-1V5a1 1 0 0 1 1.5-.87l19 11a1 1 0 0 1 0 1.74l-19 11A1 1 0 0 1 7 28zm1-21.27v18.54L24 16z"/></svg></a>
+    <a class="tile" id="listen" target="_blank" rel="noopener">Listen to the podcast
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M25 10.1V10a9 9 0 0 0-18 0v.1A5 5 0 0 0 8 20h2V10H9a7 7 0 0 1 14 0h-1v10h1v1a3 3 0 0 1-3 3h-2v-2h-4v4h6a5 5 0 0 0 5-5v-1.1a5 5 0 0 0 0-9.8zM8 18a3 3 0 0 1 0-6zm16 0v-6a3 3 0 0 1 0 6z"/></svg></a>
+    <a class="tile" id="read" target="_blank" rel="noopener">Read the essentials
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M25.7 9.3l-7-7A1 1 0 0 0 18 2H8a2 2 0 0 0-2 2v24a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V10a1 1 0 0 0-.3-.7zM18 4.4l5.6 5.6H18zM24 28H8V4h8v6a2 2 0 0 0 2 2h6zm-14-6h12v2H10zm0-6h12v2H10z"/></svg></a>
+    <a class="tile" id="course" target="_blank" rel="noopener">Learn quantum computing
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M28 6H18a3 3 0 0 0-2 .78A3 3 0 0 0 14 6H4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a1 1 0 0 1 1 1h2a1 1 0 0 1 1-1h10a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zM14 24H4V8h10a1 1 0 0 1 1 1v15.17A3 3 0 0 0 14 24zm14 0H18a3 3 0 0 0-1 .17V9a1 1 0 0 1 1-1h10z"/></svg></a>
+  </section>
+
+  <section class="group" aria-labelledby="actH">
+    <h2 id="actH">Take action</h2>
+    <a class="tile cta" id="event" target="_blank" rel="noopener">Sign up for quantum event updates
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M18 6l-1.43 1.39L24.15 15H4v2h20.15l-7.58 7.57L18 26l10-10z"/></svg></a>
+    <a class="tile cta" id="talk">Get help starting the conversation
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M17.74 30L16 29l4-7h6a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h9v2H6a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4h20a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4h-4.84z"/><path fill="currentColor" d="M8 10h16v2H8zm0 6h10v2H8z"/></svg></a>
+  </section>
+
+  <a class="switch" id="switch" href="#safe">Also curious about Quantum Safe?</a>
+</main>
+
+<dialog class="sheet" id="sheet" aria-labelledby="sheetH">
+  <div class="sheet-in">
+    <div class="sheet-head"><h3 id="sheetH">Email the IBM Innovation Studio</h3><button class="x" id="sheetX" type="button" aria-label="Close">&times;</button></div>
+    <div><div class="lbl">To</div><div class="val" id="sTo"></div></div>
+    <div><div class="lbl">Subject</div><div class="val" id="sSubj"></div></div>
+    <div><label class="lbl" for="sBody">Message</label><textarea id="sBody" readonly></textarea></div>
+    <div class="row">
+      <a class="btn primary" id="sOpen" target="_blank" rel="noopener">Open in mail app</a>
+      <button class="btn secondary" id="sCopy" type="button">Copy email and message</button>
+    </div>
+    <p class="note">No mail app? Copy the text and paste it into Gmail, Outlook web or any other mail.</p>
+  </div>
+</dialog>
+
+<script>
+/* ===== Edit content here ===== */
+var PAGES = {
+  innovation: {
+    title: "Quantum Innovation",
+    subtitle: "What could your industry solve with quantum?",
+    watch:  "https://www.youtube.com/@qiskit",          // TODO: Innovation explainer video
+    listen: "https://open.spotify.com/",                // TODO: podcast episode
+    read:   "https://www.ibm.com/quantum",              // TODO: reading material
+    event:  "https://forms.cloud.microsoft/r/ypfK03KQTN?source=innovation", // mailing-list sign-up form
+    subject: "Quantum Innovation: starting the conversation in our organization",
+    topicLine: "start the conversation about Quantum Innovation in my organization, and explore which use cases could matter for us",
+    other: "safe", otherLabel: "Also curious about Quantum Safe?"
+  },
+  safe: {
+    title: "Quantum Safe",
+    subtitle: "Is your organization's encryption ready for quantum?",
+    watch:  "https://www.youtube.com/@qiskit",          // TODO: Quantum Safe explainer video
+    listen: "https://open.spotify.com/",                // TODO: podcast episode
+    read:   "https://www.ibm.com/quantum/quantum-safe", // TODO: reading material
+    event:  "https://forms.cloud.microsoft/r/ypfK03KQTN?source=safe", // mailing-list sign-up form
+    subject: "Quantum Safe: starting the conversation in our organization",
+    topicLine: "start the conversation about Quantum Safe in my organization, and understand how ready our encryption is for quantum",
+    other: "innovation", otherLabel: "Also curious about Quantum Innovation?"
+  }
+};
+var EMAIL = "alina.wundsam@ibm.com"; // TODO: swap for the Innovation Studio inbox if there is one
+var COURSES = "https://quantum.cloud.ibm.com/learning/en";
+/* ============================= */
+
+function $(id) { return document.getElementById(id); }
+var codeAnim = null;
+
+function render() {
+  var key = location.hash.replace('#', '') === 'safe' ? 'safe' : 'innovation';
+  var p = PAGES[key];
+  document.body.setAttribute('data-topic', key);
+  document.title = p.title + ' · Quantum Journey';
+  $('title').textContent = p.title;
+  $('subtitle').textContent = p.subtitle;
+  $('course').href = COURSES;
+  $('watch').href = p.watch; $('listen').href = p.listen; $('read').href = p.read; $('event').href = p.event;
+  var body = [
+    "Hi IBM Innovation Studio team,",
+    "",
+    "I joined the Quantum Journey session and would like to " + p.topicLine + ".",
+    "",
+    "Could you help me with next steps, for example material to share with my team or a short session with us?",
+    "",
+    "Name:",
+    "Organization:",
+    "Role:",
+    "",
+    "Kind regards,"
+  ].join("\r\n");
+  var mailto = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(p.subject) + '&body=' + encodeURIComponent(body);
+  $('talk').href = mailto; $('sOpen').href = mailto;
+  $('sTo').textContent = EMAIL; $('sSubj').textContent = p.subject; $('sBody').value = body.replace(/\r\n/g, '\n');
+  $('switch').href = '#' + p.other; $('switch').textContent = p.otherLabel;
+  $('bgInnovation').hidden = key !== 'innovation';
+  $('bgSafe').hidden = key !== 'safe';
+  if (key === 'safe') startCode(); else stopCode();
+  window.scrollTo(0, 0);
+}
+window.addEventListener('hashchange', render);
+
+
+/* Encryption stream: columns of hex/glyphs falling; now and then one column spells QUANTUM SAFE */
+var c = $('code'), ctx = c.getContext('2d'), cols = [], fs = 15, W = 0, H = 0, last = 0;
+var GLYPHS = '0123456789ABCDEF#$%&*+=<>/\\|{}[]';
+var WORD = 'QUANTUM SAFE';
+var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function sizeCanvas() {
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = c.clientWidth; H = c.clientHeight; c.width = W * dpr; c.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  var n = Math.ceil(W / fs); cols = [];
+  for (var i = 0; i < n; i++) cols.push({ y: Math.random() * H, v: .4 + Math.random() * .9, word: -1 });
+  ctx.fillStyle = '#02050c'; ctx.fillRect(0, 0, W, H);
+}
+function frame(t) {
+  if (t - last < 55) { codeAnim = requestAnimationFrame(frame); return; }
+  last = t;
+  ctx.fillStyle = 'rgba(2,5,12,0.14)'; ctx.fillRect(0, 0, W, H);
+  ctx.font = fs + 'px ' + getComputedStyle(document.body).getPropertyValue('--mono');
+  for (var i = 0; i < cols.length; i++) {
+    var col = cols[i], ch, x = i * fs;
+    if (col.word >= 0) {
+      ch = WORD[col.word]; col.word++;
+      ctx.fillStyle = '#d0e2ff';
+      if (col.word >= WORD.length) col.word = -1;
+    } else {
+      ch = GLYPHS[(Math.random() * GLYPHS.length) | 0];
+      ctx.fillStyle = Math.random() < .08 ? '#a6c8ff' : 'rgba(69,137,255,.75)';
+    }
+    ctx.fillText(ch, x, col.y);
+    col.y += fs * col.v;
+    if (col.y > H + fs) { col.y = -Math.random() * 200; col.v = .4 + Math.random() * .9;
+      if (Math.random() < .04) col.word = 0; }
+  }
+  codeAnim = requestAnimationFrame(frame);
+}
+function startCode() {
+  sizeCanvas();
+  if (reduce) { for (var k = 0; k < 60; k++) frame(k * 60); cancelAnimationFrame(codeAnim); codeAnim = null; return; }
+  if (!codeAnim) codeAnim = requestAnimationFrame(frame);
+}
+function stopCode() { if (codeAnim) cancelAnimationFrame(codeAnim); codeAnim = null; }
+var rt; window.addEventListener('resize', function () { clearTimeout(rt);
+  rt = setTimeout(function () { if (!$('bgSafe').hidden) sizeCanvas(); }, 150); });
+
+$('talk').addEventListener('click', function (e) {
+  var d = $('sheet');
+  if (d.showModal) { e.preventDefault(); d.showModal(); }
+});
+$('sheetX').addEventListener('click', function () { $('sheet').close(); });
+$('sheet').addEventListener('click', function (e) { if (e.target === this) this.close(); });
+$('sCopy').addEventListener('click', function () {
+  var btn = this, text = 'To: ' + EMAIL + '\nSubject: ' + $('sSubj').textContent + '\n\n' + $('sBody').value;
+  function done() { btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy email and message'; }, 1800); }
+  function fallback() { var t = $('sBody'); t.focus(); t.select(); btn.textContent = 'Message selected, copy it manually'; }
+  try { navigator.clipboard.writeText(text).then(done, fallback); } catch (err) { fallback(); }
+});
+
+render();
+</script>
+</body>
+</html>
