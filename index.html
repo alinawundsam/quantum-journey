@@ -64,7 +64,6 @@ h1 { margin: 20px 0 8px; font-size: 26px; font-weight: 600; letter-spacing: -.00
 .gh { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 0 0 2px; text-align: left; }
 .gh h2 { margin: 0; font-size: 12px; font-weight: 600; letter-spacing: .14em;
   text-transform: uppercase; color: var(--fg); text-shadow: 0 1px 2px rgba(0,0,0,.7), 0 0 14px rgba(0,0,0,.65); }
-.gh span { font-size: 14px; color: var(--fg); text-align: right; text-shadow: 0 1px 2px rgba(0,0,0,.7), 0 0 14px rgba(0,0,0,.65); }
 
 .tile { display: flex; align-items: center; justify-content: space-between; gap: 16px; box-sizing: border-box;
   min-height: 56px; padding: 8px 16px; background: var(--tile); color: var(--tile-fg);
@@ -158,7 +157,7 @@ fieldset.q legend { padding: 0; margin-bottom: 6px; font-size: 15px; line-height
   <p class="sub" id="subtitle">What could your industry solve with quantum?</p>
 
   <section class="group" aria-labelledby="exploreH">
-    <div class="gh"><h2 id="exploreH"></h2><span id="exploreHint"></span></div>
+    <div class="gh"><h2 id="exploreH"></h2></div>
     <button class="tile" type="button" data-tile="takeaways" data-open="sheetTake">
       <span class="tx"><span class="l"></span><span class="s"></span></span>
       <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M25.7 9.3l-7-7A1 1 0 0 0 18 2H8a2 2 0 0 0-2 2v24a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V10a1 1 0 0 0-.3-.7zM18 4.4l5.6 5.6H18zM24 28H8V4h8v6a2 2 0 0 0 2 2h6zm-14-6h12v2H10zm0-6h12v2H10z"/></svg></button>
@@ -168,7 +167,7 @@ fieldset.q legend { padding: 0; margin-bottom: 6px; font-size: 15px; line-height
   </section>
 
   <section class="group" aria-labelledby="learnH">
-    <div class="gh"><h2 id="learnH"></h2><span id="learnHint"></span></div>
+    <div class="gh"><h2 id="learnH"></h2></div>
     <button class="tile" type="button" id="learnTile" data-tile="learn">
       <span class="tx"><span class="l"></span><span class="s"></span></span>
       <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M14 21.414l-5-5.00 1.414-1.414L14 18.586l7.586-7.586L23 12.414z"/><path fill="currentColor" d="M16 2a14 14 0 1 0 14 14A14 14 0 0 0 16 2zm0 26a12 12 0 1 1 12-12 12 12 0 0 1-12 12z"/></svg></button>
@@ -178,7 +177,7 @@ fieldset.q legend { padding: 0; margin-bottom: 6px; font-size: 15px; line-height
   </section>
 
   <section class="group" aria-labelledby="actH">
-    <div class="gh"><h2 id="actH"></h2><span id="actHint"></span></div>
+    <div class="gh"><h2 id="actH"></h2></div>
     <button class="tile cta" type="button" data-tile="host" data-open="sheetHost">
       <span class="tx"><span class="l"></span><span class="s"></span></span>
       <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M18 6l-1.43 1.39L24.15 15H4v2h20.15l-7.58 7.57L18 26l10-10z"/></svg></button>
@@ -249,9 +248,9 @@ var PAGES = {
   /* Shared by both pages */
   common: {
     groups: {
-      explore: { title: "Explore",     hint: "Recap the session" },
-      learn:   { title: "Learn",       hint: "Apply it to your org" },
-      act:     { title: "Take action", hint: "Bring it to your org" }
+      explore: { title: "Explore" },
+      learn:   { title: "Learn" },
+      act:     { title: "Take action" }
     },
     takeaways: { label: "Three things to remember", sub: "The key messages from the session", copy: "Copy a LinkedIn post", note: "Edit the post to make it your own before you share it." },
     podcast:   { label: "Listen to the podcast" },
@@ -411,9 +410,9 @@ function render() {
   document.title = p.title + ' · Quantum Journey';
   $('title').textContent = p.title;
   $('subtitle').textContent = p.subtitle;
-  $('exploreH').textContent = c.groups.explore.title; $('exploreHint').textContent = c.groups.explore.hint;
-  $('learnH').textContent = c.groups.learn.title;     $('learnHint').textContent = c.groups.learn.hint;
-  $('actH').textContent = c.groups.act.title;         $('actHint').textContent = c.groups.act.hint;
+  $('exploreH').textContent = c.groups.explore.title;
+  $('learnH').textContent = c.groups.learn.title;    
+  $('actH').textContent = c.groups.act.title;        
 
   /* Explore */
   setTile('takeaways', c.takeaways.label, c.takeaways.sub);
