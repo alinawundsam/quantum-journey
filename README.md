@@ -12,7 +12,7 @@ One static file, zero build step, zero tracking.
 
 ## How to update content
 
-1. Open `index.html` and edit the `PAGES` / `EMAIL` / `COURSES` config block at the top of `<script>`.
+1. Open `index.html` and edit the `PAGES` / `EMAIL` config block at the top of `<script>`.
 2. `git add index.html && git commit -m "update content" && git push`
 3. GitHub Pages re-deploys in ~30 seconds. The NFC tag URLs never change.
 
@@ -38,12 +38,7 @@ README.md
 
 | Item | Location in index.html | What to fill in |
 |---|---|---|
-| Innovation explainer video | `PAGES.innovation.watch` | YouTube / IBM video URL |
-| Innovation podcast episode | `PAGES.innovation.listen` | Spotify / podcast URL |
-| Innovation reading material | `PAGES.innovation.read` | IBM article / report URL |
-| Quantum Safe explainer video | `PAGES.safe.watch` | YouTube / IBM video URL |
-| Quantum Safe podcast episode | `PAGES.safe.listen` | Spotify / podcast URL |
-| Quantum Safe reading material | `PAGES.safe.read` | Already set to ibm.com/quantum/quantum-safe — confirm or replace |
+| Takeaways (three per page) | `PAGES.innovation.takeaways` / `PAGES.safe.takeaways` | TODO: replace with the session's own wording (also feeds the LinkedIn post) |
 | Innovation Studio inbox | `EMAIL` constant | Replace `alina.wundsam@ibm.com` if there's a shared inbox |
 | Real Innovation background | `assets/bg-innovation.jpg` | Replace stand-in chandelier photo with the real event photo |
 | WebP background variant | CSS `.bg-innovation` | Add `assets/bg-innovation.webp` + `image-set()` when you have a WebP encoder |
