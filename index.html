@@ -252,7 +252,7 @@ var PAGES = {
       learn:   { title: "Learn" },
       act:     { title: "Take action" }
     },
-    takeaways: { label: "Three things to remember", sub: "The key messages from the session", copy: "Copy a LinkedIn post", note: "Edit the post to make it your own before you share it." },
+    takeaways: { label: "Three things to remember from the session", copy: "Copy a LinkedIn post", note: "Edit the post to make it your own before you share it." },
     podcast:   { label: "Listen to the podcast" },
     course:    { label: "Take a free course", sub: "IBM Quantum Learning · self-paced", url: "https://quantum.cloud.ibm.com/learning/en" },
     host: {
@@ -372,7 +372,7 @@ var codeAnim = null, curKey = 'innovation', answers = [];
 
 function setTile(name, label, sub) {
   var t = document.querySelector('[data-tile="' + name + '"]');
-  t.querySelector('.l').textContent = label; t.querySelector('.s').textContent = sub;
+  t.querySelector('.l').textContent = label; t.querySelector('.s').textContent = sub || ''; t.querySelector('.s').hidden = !sub;
   return t;
 }
 function topics() {
