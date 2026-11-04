@@ -170,7 +170,6 @@ fieldset.q legend { padding: 0; margin-bottom: 6px; font-size: 15px; line-height
   <img class="avatar" src="assets/avatar.png" alt="IBM logo">
   <p class="series" id="startKicker"></p>
   <h1 id="startTitle"></h1>
-  <p class="sub" id="startSub"></p>
   <div class="cards" id="startCards"></div>
   <p class="start-note" id="startNote"></p>
 </main>
@@ -304,8 +303,7 @@ var PAGES = {
   start: {
     title: "Quantum Journey",
     kicker: "Your Quantum Kit \u00b7 Women & Tech",
-    heading: "Where do you want to go next?",
-    sub: "Pick a topic to explore further.",
+    heading: "Pick a topic to explore further",
     cards: [
       { key: "innovation", title: "Quantum Innovation", sub: "What could quantum solve for us?" },
       { key: "safe",       title: "Quantum Safe",       sub: "Is our encryption ready for quantum?" }
@@ -388,6 +386,7 @@ var PAGES = {
     },
     event: { url: "https://forms.cloud.microsoft/r/ypfK03KQTN?source=safe" }, // mailing-list sign-up form
     host: {
+      label: "Bring Quantum Safe to your team", eyebrow: "Bring Quantum Safe to your team",
       subject: "Quantum Safe: hosting a session for my team",
       intro: "After the Women & Tech session on Quantum Safe, I\u2019d like to host a session for my team.",
       points: [
@@ -442,7 +441,7 @@ function renderStart() {
   var st = PAGES.start;
   document.title = st.title;
   $('startKicker').textContent = st.kicker; $('startTitle').textContent = st.heading;
-  $('startSub').textContent = st.sub; $('startNote').textContent = st.note;
+  $('startNote').textContent = st.note;
   clear($('startCards'));
   st.cards.forEach(function (x) {
     var a = el('a', 'card card-' + x.key), tx = el('span', 'tx');
@@ -521,9 +520,9 @@ function render() {
 
   /* Take action */
   var h = c.host;
-  setTile('host', h.label, h.sub);
+  setTile('host', p.host.label || h.label, h.sub);
   setTile('event', c.event.label, c.event.sub).href = p.event.url;
-  $('hostEye').textContent = h.eyebrow; $('hostH').textContent = h.heading; $('hostPitch').textContent = h.pitch;
+  $('hostEye').textContent = p.host.eyebrow || h.eyebrow; $('hostH').textContent = h.heading; $('hostPitch').textContent = h.pitch;
   clear($('hostBullets'));
   h.bullets.forEach(function (b) { var li = el('li'); li.appendChild(el('strong', null, b[0])); li.appendChild(document.createTextNode(b[1])); $('hostBullets').appendChild(li); });
   $('reqH').textContent = h.requestTitle; $('reqHelp').textContent = h.requestHelp + " (" + EMAIL + ").";
