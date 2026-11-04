@@ -97,6 +97,21 @@ button.tile { width: 100%; border: 0; font-family: inherit; cursor: pointer; }
 .switch:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
 
 
+/* Start screen */
+main[hidden] { display: none; }
+.cards { width: 100%; margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
+.card { position: relative; box-sizing: border-box; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
+  min-height: 132px; padding: 16px; color: var(--fg); text-decoration: none; text-align: left; overflow: hidden; }
+.card .tx { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.card .t { font-size: 22px; font-weight: 600; letter-spacing: -.005em; }
+.card .d { font-size: 16px; font-weight: 300; line-height: 1.35; }
+.card svg { width: 20px; height: 20px; flex: none; }
+.card-innovation { background: linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.2) 60%, rgba(0,0,0,0) 100%), url("assets/bg-innovation.jpg") center / cover no-repeat, #0d0b09; }
+.card-safe { background: repeating-linear-gradient(90deg, rgba(69,137,255,.16) 0 1px, transparent 1px 15px), #02050c; }
+.card:hover { box-shadow: inset 0 0 0 2px rgba(255,255,255,.7); }
+.card:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.start-note { margin: 24px 0 0; color: var(--sub); font-size: 14px; text-shadow: 0 1px 8px rgba(0,0,0,.7); }
+
 /* Sheets: takeaways, case studies, readiness check, host-a-session */
 dialog.sheet { border: 0; padding: 0; width: min(100% - 32px, 400px); max-height: calc(100% - 32px);
   background: #fff; color: #161616; font-family: var(--font); overscroll-behavior: contain; }
@@ -151,7 +166,16 @@ fieldset.q legend { padding: 0; margin-bottom: 6px; font-size: 15px; line-height
 <div class="bg bg-innovation" id="bgInnovation" aria-hidden="true"><div class="photo"></div><div class="fade"></div><div class="grain"></div></div>
 <div class="bg bg-safe" id="bgSafe" aria-hidden="true" hidden><canvas id="code"></canvas><div class="fade"></div><div class="grain"></div></div>
 
-<main>
+<main id="startMain" hidden>
+  <img class="avatar" src="assets/avatar.png" alt="IBM logo">
+  <p class="series" id="startKicker"></p>
+  <h1 id="startTitle"></h1>
+  <p class="sub" id="startSub"></p>
+  <div class="cards" id="startCards"></div>
+  <p class="start-note" id="startNote"></p>
+</main>
+
+<main id="topicMain">
   <img class="avatar" src="assets/avatar.png" alt="IBM logo">
   <h1 id="title">Quantum Innovation</h1>
   <p class="sub" id="subtitle">What could your industry solve with quantum?</p>
@@ -254,7 +278,7 @@ var PAGES = {
     },
     takeaways: { label: "Three things to remember", sub: "The key messages from the session", copy: "Copy a LinkedIn post", note: "Edit the post to make it your own before you share it." },
     podcast:   { label: "Listen to the podcast" },
-    course:    { label: "Earn a quantum badge", sub: "IBM Quantum Learning", url: "https://quantum.cloud.ibm.com/learning/en" },
+    course:    { label: "Build your quantum skills", sub: "IBM Quantum Learning", url: "https://quantum.cloud.ibm.com/learning/en" },
     host: {
       label: "Bring quantum to your team", sub: "IBM experts come to you, on us",
       eyebrow: "Bring quantum to your team", heading: "Host a quantum session with IBM",
@@ -276,6 +300,19 @@ var PAGES = {
     event: { label: "Join upcoming quantum events", sub: "Get invites to the next sessions" }
   },
 
+  /* Start screen: shown when the URL has no #innovation or #safe (the NFC sticker link) */
+  start: {
+    title: "Quantum Journey",
+    kicker: "Your Quantum Kit \u00b7 Women & Tech",
+    heading: "Where do you want to go next?",
+    sub: "Pick a topic to explore further.",
+    cards: [
+      { key: "innovation", title: "Quantum Innovation", sub: "What could quantum solve for us?" },
+      { key: "safe",       title: "Quantum Safe",       sub: "Is our encryption ready for quantum?" }
+    ],
+    note: "You can switch topics anytime."
+  },
+
   innovation: {
     title: "Quantum Innovation",
     subtitle: "What could your industry solve with quantum?",
@@ -293,9 +330,9 @@ var PAGES = {
     },
     podcast: { sub: "The Coherence Times · IBM podcast", url: "https://open.spotify.com/show/1affsIUHQgmG2v2vKKGnva" },
     cases: {
-      label: "See it in action", sub: "4 real use cases from IBM partners",
+      label: "See it in action", sub: "How Moderna, E.ON and Boeing use quantum",
       eyebrow: "Use cases", heading: "Quantum at work today",
-      lead: "How Moderna, E.ON and Boeing use quantum",
+      lead: "",
       items: [
         { cat: "Healthcare",    name: "Moderna",             desc: "Predicting mRNA structures to help design new medicines", url: "https://www.ibm.com/case-studies/moderna" },
         { cat: "Energy",        name: "E.ON",                desc: "Pricing energy derivatives and managing weather risk on the grid", url: "https://www.ibm.com/case-studies/eon" },
@@ -401,12 +438,35 @@ function updateResult() {
       .replace('{gaps}', g === 1 ? '1 topic' : g + ' topics');
 }
 
+function renderStart() {
+  var st = PAGES.start;
+  document.title = st.title;
+  $('startKicker').textContent = st.kicker; $('startTitle').textContent = st.heading;
+  $('startSub').textContent = st.sub; $('startNote').textContent = st.note;
+  clear($('startCards'));
+  st.cards.forEach(function (x) {
+    var a = el('a', 'card card-' + x.key), tx = el('span', 'tx');
+    a.href = '#' + x.key;
+    tx.appendChild(el('span', 't', x.title)); tx.appendChild(el('span', 'd', x.sub));
+    a.appendChild(tx);
+    a.insertAdjacentHTML('beforeend', '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M18 6l-1.43 1.39L24.15 15H4v2h20.15l-7.58 7.57L18 26l10-10z"/></svg>');
+    $('startCards').appendChild(a);
+  });
+}
+
 function render() {
-  var key = location.hash.replace('#', '') === 'safe' ? 'safe' : 'innovation';
-  var p = PAGES[key], c = PAGES.common;
-  curKey = key; answers = [];
+  var h = location.hash.replace('#', '');
+  var key = (h === 'safe' || h === 'innovation') ? h : 'start';
   Array.prototype.forEach.call(document.querySelectorAll('dialog[open]'), function (d) { d.close(); });
   document.body.setAttribute('data-topic', key);
+  $('startMain').hidden = key !== 'start';
+  $('topicMain').hidden = key === 'start';
+  $('bgInnovation').hidden = key !== 'innovation';
+  $('bgSafe').hidden = key === 'innovation';
+  if (key === 'innovation') stopCode(); else startCode();
+  if (key === 'start') { renderStart(); window.scrollTo(0, 0); return; }
+  var p = PAGES[key], c = PAGES.common;
+  curKey = key; answers = [];
   document.title = p.title + ' · Quantum Journey';
   $('title').textContent = p.title;
   $('subtitle').textContent = p.subtitle;
@@ -475,9 +535,6 @@ function render() {
   refreshHost();
 
   $('switch').href = '#' + p.other; $('switch').textContent = p.otherLabel;
-  $('bgInnovation').hidden = key !== 'innovation';
-  $('bgSafe').hidden = key !== 'safe';
-  if (key === 'safe') startCode(); else stopCode();
   window.scrollTo(0, 0);
 }
 window.addEventListener('hashchange', render);
