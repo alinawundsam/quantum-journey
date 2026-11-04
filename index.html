@@ -294,8 +294,8 @@ var PAGES = {
     podcast: { sub: "The Coherence Times · IBM podcast", url: "https://open.spotify.com/show/1affsIUHQgmG2v2vKKGnva" },
     cases: {
       label: "See it in action", sub: "4 real use cases from IBM partners",
-      eyebrow: "Real use cases", heading: "How organizations explore quantum today",
-      lead: "Four projects from IBM\u2019s quantum partners. Tap one to read the full case study.",
+      eyebrow: "Use cases", heading: "Quantum at work today",
+      lead: "How Moderna, E.ON and Boeing use quantum",
       items: [
         { cat: "Healthcare",    name: "Moderna",             desc: "Predicting mRNA structures to help design new medicines", url: "https://www.ibm.com/case-studies/moderna" },
         { cat: "Energy",        name: "E.ON",                desc: "Pricing energy derivatives and managing weather risk on the grid", url: "https://www.ibm.com/case-studies/eon" },
@@ -432,7 +432,7 @@ function render() {
   lt.setAttribute('data-open', p.cases ? 'sheetCases' : 'sheetCheck');
   setTile('course', c.course.label, c.course.sub).href = c.course.url;
   if (p.cases) {
-    $('casesEye').textContent = p.cases.eyebrow; $('casesH').textContent = p.cases.heading; $('casesLead').textContent = p.cases.lead;
+    $('casesEye').textContent = p.cases.eyebrow; $('casesH').textContent = p.cases.heading; $('casesLead').textContent = p.cases.lead; $('casesLead').hidden = !p.cases.lead;
     clear($('caseList'));
     p.cases.items.forEach(function (x) {
       var a = el('a', 'case'); a.href = x.url; a.target = '_blank'; a.rel = 'noopener';
