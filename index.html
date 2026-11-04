@@ -100,15 +100,16 @@ button.tile { width: 100%; border: 0; font-family: inherit; cursor: pointer; }
 /* Start screen */
 main[hidden] { display: none; }
 .cards { width: 100%; margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
-.card { position: relative; box-sizing: border-box; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
-  min-height: 128px; padding: 16px; color: var(--fg); text-decoration: none; text-align: left; overflow: hidden; }
-.card .tx { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.card .t { font-size: 20px; font-weight: 600; letter-spacing: -.005em; }
-.card .d { font-size: 16px; font-weight: 300; line-height: 1.35; }
-.card svg { width: 20px; height: 20px; flex: none; }
-.card-innovation { background: linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.2) 60%, rgba(0,0,0,0) 100%), url("assets/bg-innovation.jpg") center / cover no-repeat, #0d0b09; }
-.card-safe { background: repeating-linear-gradient(90deg, rgba(69,137,255,.16) 0 1px, transparent 1px 15px), #02050c; }
-.card:hover { box-shadow: inset 0 0 0 2px rgba(255,255,255,.7); }
+.card { box-sizing: border-box; display: flex; align-items: center; gap: 16px; padding: 20px 16px;
+  color: var(--fg); text-decoration: none; text-align: left;
+  background: rgba(255,255,255,.06); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.45); }
+.card .ic { width: 32px; height: 32px; flex: none; color: #78a9ff; }
+.card .tx { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1; }
+.card .t { font-size: 18px; font-weight: 600; }
+.card .d { font-size: 13px; line-height: 1.4; color: #c6c6c6; }
+.card .go { width: 20px; height: 20px; flex: none; }
+.card:hover { background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px #fff; }
 .card:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 .start-note { margin: 24px 0 0; color: var(--sub); font-size: 14px; text-shadow: 0 1px 8px rgba(0,0,0,.7); }
 
@@ -308,8 +309,8 @@ var PAGES = {
     kicker: "Your Quantum Kit \u00b7 Women & Tech",
     heading: "Pick a topic to explore further",
     cards: [
-      { key: "innovation", title: "Quantum Innovation", sub: "What could quantum solve for us?" },
-      { key: "safe",       title: "Quantum Safe",       sub: "Is our encryption ready for quantum?" }
+      { key: "innovation", icon: "atom", title: "Quantum Innovation", sub: "What could quantum solve for us?" },
+      { key: "safe",       icon: "lock", title: "Quantum Safe",       sub: "Is our encryption ready for quantum?" }
     ],
     note: "You can switch topics anytime."
   },
@@ -440,6 +441,10 @@ function updateResult() {
       .replace('{gaps}', g === 1 ? '1 topic' : g + ' topics');
 }
 
+var CARD_ICONS = {
+  atom: '<ellipse cx="16" cy="16" rx="13" ry="5"/><ellipse cx="16" cy="16" rx="13" ry="5" transform="rotate(60 16 16)"/><ellipse cx="16" cy="16" rx="13" ry="5" transform="rotate(120 16 16)"/><circle cx="16" cy="16" r="2"/>',
+  lock: '<rect x="7" y="14" width="18" height="14"/><path d="M11 14V10a5 5 0 0 1 10 0v4"/><circle cx="16" cy="21" r="1.5"/>'
+};
 function renderStart() {
   var st = PAGES.start;
   document.title = st.title;
@@ -449,9 +454,10 @@ function renderStart() {
   st.cards.forEach(function (x) {
     var a = el('a', 'card card-' + x.key), tx = el('span', 'tx');
     a.href = '#' + x.key;
+    a.insertAdjacentHTML('beforeend', '<svg class="ic" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">' + (CARD_ICONS[x.icon] || '') + '</svg>');
     tx.appendChild(el('span', 't', x.title)); tx.appendChild(el('span', 'd', x.sub));
     a.appendChild(tx);
-    a.insertAdjacentHTML('beforeend', '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M18 6l-1.43 1.39L24.15 15H4v2h20.15l-7.58 7.57L18 26l10-10z"/></svg>');
+    a.insertAdjacentHTML('beforeend', '<svg class="go" viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M18 6l-1.43 1.39L24.15 15H4v2h20.15l-7.58 7.57L18 26l10-10z"/></svg>');
     $('startCards').appendChild(a);
   });
 }
