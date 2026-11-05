@@ -371,6 +371,7 @@ var PAGES = {
       postIntro: "I joined the Women & Tech session on Quantum Safe at the IBM Innovation Studio in Amsterdam. Three things I\u2019m taking away:",
       postOutro: "Curious? Start here: https://www.ibm.com/quantum/quantum-safe #QuantumSafe #Cybersecurity"
     },
+    course: { label: "Read the readiness study", sub: "IBM Institute for Business Value", url: "https://www.ibm.com/thought-leadership/institute-business-value/en-us/report/2025-quantum-safe-readiness" },
     podcast: { sub: "Techsplainers · the Q-day episode", url: "https://open.spotify.com/episode/08sNGt8B6a2Hl8IFe3l9Af" },
     check: {
       label: "Check your readiness", sub: "5 quick questions",
@@ -498,7 +499,8 @@ function render() {
   var lt = $('learnTile'), L = p.cases || p.check;
   setTile('learn', L.label, L.sub);
   lt.setAttribute('data-open', p.cases ? 'sheetCases' : 'sheetCheck');
-  setTile('course', c.course.label, c.course.sub).href = c.course.url;
+  var cr = p.course || c.course;
+  setTile('course', cr.label, cr.sub).href = cr.url;
   if (p.cases) {
     $('casesEye').textContent = p.cases.eyebrow; $('casesH').textContent = p.cases.heading; $('casesLead').textContent = p.cases.lead; $('casesLead').hidden = !p.cases.lead;
     clear($('caseList'));
